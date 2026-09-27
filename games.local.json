@@ -1,0 +1,28 @@
+{
+  "viewports": [
+    {"name": "desktop", "width": 1440, "height": 1000},
+    {"name": "mobile", "width": 390, "height": 844}
+  ],
+  "targets": [
+    {
+      "id": "root-breach", "name": "ROOT//BREACH 多武器生存射击", "url": "http://127.0.0.1:3101",
+      "expect_canvas": true,
+      "performance": {"fps_min": 30, "memory_mb_max": 180, "dom_content_loaded_ms_max": 5000},
+      "actions": [
+        {"type": "click_text", "text": "开始防守"}, {"type": "wait", "ms": 400},
+        {"type": "key_hold", "key": "d", "ms": 450}, {"type": "canvas_fire", "x": 0.82, "y": 0.42, "ms": 650}
+      ]
+    },
+    {
+      "id": "null-deck", "name": "NULL DECK 回合制卡牌对战", "url": "http://127.0.0.1:3102",
+      "expect_canvas": false, "render_selector": "main", "max_overflow_px": 500,
+      "performance": {"fps_min": 30, "memory_mb_max": 180, "dom_content_loaded_ms_max": 5000},
+      "actions": [
+        {"type": "click_text", "text": "进入匹配"}, {"type": "assert_text", "text": "你的回合"},
+        {"type": "click_selector", "selector": ".card:not(:disabled)", "optional": true},
+        {"type": "click_text", "text": "结束回合"}, {"type": "assert_text", "text": "对手行动"},
+        {"type": "wait", "ms": 1100}, {"type": "assert_text", "text": "你的行动"}
+      ]
+    }
+  ]
+}
