@@ -1,0 +1,87 @@
+name: Game QA Automation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  web-game-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout automation tool
+        uses: actions/checkout@v4
+
+      - name: Checkout ROOT BREACH
+        uses: actions/checkout@v4
+        with:
+          repository: Hhuang191/root-breach-game
+          path: games/root-breach
+
+      - name: Checkout NULL DECK
+        uses: actions/checkout@v4
+        with:
+          repository: Hhuang191/RAG-Hhuang191
+          path: games/null-deck
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            games/root-breach/package-lock.json
+            games/null-deck/package-lock.json
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+          npm ci --prefix games/root-breach
+          npm ci --prefix games/null-deck
+
+      - name: Run game automation
+        shell: bash
+        run: |
+          set +e
+          (cd games/root-breach && npm run dev -- --port 3101) > root-server.log 2>&1 &
+          ROOT_PID=$!
+          for i in {1..45}; do curl -fsS http://127.0.0.1:3101 >/dev/null && break; sleep 2; done
+          python game_tester.py --config root.local.json --output reports/root --chrome ""
+          ROOT_RESULT=$?
+          kill $ROOT_PID || true
+
+          (cd games/null-deck && npm run dev -- --port 3102) > deck-server.log 2>&1 &
+          DECK_PID=$!
+          for i in {1..45}; do curl -fsS http://127.0.0.1:3102 >/dev/null && break; sleep 2; done
+          python game_tester.py --config deck.local.json --output reports/deck --chrome ""
+          DECK_RESULT=$?
+          kill $DECK_PID || true
+
+          cp root-server.log reports/root/ || true
+          cp deck-server.log reports/deck/ || true
+          test $ROOT_RESULT -eq 0 -a $DECK_RESULT -eq 0
+
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: game-qa-reports-${{ github.run_number }}
+          path: reports/
+          retention-days: 30
+
+  android-config-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate Android test configuration
+        run: python android_tester.py --config android.example.json --dry-run
