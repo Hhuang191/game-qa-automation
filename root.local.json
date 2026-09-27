@@ -1,0 +1,26 @@
+{
+  "viewports": [
+    {"name": "desktop", "width": 1440, "height": 1000},
+    {"name": "mobile", "width": 390, "height": 844}
+  ],
+  "targets": [
+    {
+      "id": "root-breach",
+      "name": "ROOT//BREACH 多武器生存射击",
+      "url": "http://127.0.0.1:3101",
+      "expect_canvas": true,
+      "fps_sample_ms": 1800,
+      "performance": {
+        "fps_min": 30,
+        "memory_mb_max": 180,
+        "dom_content_loaded_ms_max": 5000
+      },
+      "actions": [
+        {"type": "click_text", "text": "开始防守"},
+        {"type": "wait", "ms": 400},
+        {"type": "key_hold", "key": "d", "ms": 450},
+        {"type": "canvas_fire", "x": 0.82, "y": 0.42, "ms": 650}
+      ]
+    }
+  ]
+}
