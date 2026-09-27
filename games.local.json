@@ -5,7 +5,7 @@
   ],
   "targets": [
     {
-      "id": "root-breach", "name": "ROOT//BREACH 多武器生存射击", "url": "http://127.0.0.1:3101",
+      "id": "root-breach", "name": "ROOT//BREACH 多武器生存射击", "url": "http://localhost:3101",
       "expect_canvas": true,
       "performance": {"fps_min": 30, "memory_mb_max": 180, "dom_content_loaded_ms_max": 5000},
       "actions": [
@@ -14,7 +14,7 @@
       ]
     },
     {
-      "id": "null-deck", "name": "NULL DECK 回合制卡牌对战", "url": "http://127.0.0.1:3102",
+      "id": "null-deck", "name": "NULL DECK 回合制卡牌对战", "url": "http://localhost:3102",
       "expect_canvas": false, "render_selector": "main", "max_overflow_px": 500,
       "performance": {"fps_min": 30, "memory_mb_max": 180, "dom_content_loaded_ms_max": 5000},
       "actions": [
