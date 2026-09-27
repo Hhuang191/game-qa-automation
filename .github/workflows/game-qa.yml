@@ -52,14 +52,14 @@ jobs:
           set +e
           (cd games/root-breach && npm run dev -- --port 3101) > root-server.log 2>&1 &
           ROOT_PID=$!
-          for i in {1..45}; do curl -fsS http://127.0.0.1:3101 >/dev/null && break; sleep 2; done
+          for i in {1..45}; do curl -fsS http://localhost:3101 >/dev/null && break; sleep 2; done
           python game_tester.py --config root.local.json --output reports/root --chrome ""
           ROOT_RESULT=$?
           kill $ROOT_PID || true
 
           (cd games/null-deck && npm run dev -- --port 3102) > deck-server.log 2>&1 &
           DECK_PID=$!
-          for i in {1..45}; do curl -fsS http://127.0.0.1:3102 >/dev/null && break; sleep 2; done
+          for i in {1..45}; do curl -fsS http://localhost:3102 >/dev/null && break; sleep 2; done
           python game_tester.py --config deck.local.json --output reports/deck --chrome ""
           DECK_RESULT=$?
           kill $DECK_PID || true
