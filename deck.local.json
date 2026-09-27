@@ -7,7 +7,7 @@
     {
       "id": "null-deck",
       "name": "NULL DECK 回合制卡牌对战",
-      "url": "http://127.0.0.1:3102",
+      "url": "http://localhost:3102",
       "expect_canvas": false,
       "render_selector": "main",
       "max_overflow_px": 500,
