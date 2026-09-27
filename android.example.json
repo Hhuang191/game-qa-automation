@@ -1,0 +1,22 @@
+{
+  "package": "com.example.game",
+  "activity": ".MainActivity",
+  "apk": "",
+  "settle_seconds": 2,
+  "video_seconds": 30,
+  "performance": {
+    "fps_min": 30,
+    "memory_mb_max": 500,
+    "cold_launch_ms_max": 5000
+  },
+  "actions": [
+    {"type": "tap", "x": 540, "y": 1650},
+    {"type": "wait", "ms": 1500},
+    {"type": "swipe", "x1": 850, "y1": 1200, "x2": 250, "y2": 1200, "ms": 400},
+    {"type": "keyevent", "keycode": 4}
+  ],
+  "appium_server": "http://127.0.0.1:4723",
+  "appium_actions": [
+    {"type": "assert_visible", "by": "text", "value": "开始", "optional": true}
+  ]
+}
